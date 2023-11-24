@@ -13,13 +13,14 @@ body {
     color: #fefefe;
 }
 
-#root {
+#app {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    padding: 0 max(calc((100% - 80rem) / 2), 2rem);
 }
 
-
-button, input {
-    font: inherit
+button,
+input {
+    font: inherit;
 }
