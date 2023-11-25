@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import DeleteAction from "@/components/DeleteAction.vue";
+import { RouterLink } from "vue-router";
+
 const items = [
     {
         id: "1",
@@ -22,8 +25,27 @@ const items = [
                     <td class="table-cell">{{ item.id }}</td>
                     <td class="table-cell">{{ item.name }}</td>
                     <td class="table-cell actions">
-                        <button class="delete-action">Excluir</button>
-                        <button class="update-action">Atualizar</button>
+                        <RouterLink
+                            :to="{
+                                name: 'show-product',
+                                params: { id: item.id },
+                            }"
+                            class="see-action"
+                        >
+                            Visualizar
+                        </RouterLink>
+                        <DeleteAction class="delete-action">
+                            Excluir
+                        </DeleteAction>
+                        <RouterLink
+                            :to="{
+                                name: 'update-product',
+                                params: { id: item.id },
+                            }"
+                            class="update-action"
+                        >
+                            Atualizar
+                        </RouterLink>
                     </td>
                 </tr>
             </tbody>
@@ -81,19 +103,21 @@ const items = [
     gap: 1rem;
 }
 
-.delete-action,
-.update-action {
+.update-action,
+.see-action {
     border: none;
     padding: 0.5rem 0.75rem;
     border-radius: 4px;
-    color: white;
-}
-
-.delete-action {
-    background-color: #ff5258;
+    text-decoration: none;
 }
 
 .update-action {
     background-color: #5ba7fd;
+    color: white;
+}
+
+.see-action {
+    background: #fefefe;
+    color: black;
 }
 </style>
