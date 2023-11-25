@@ -1,17 +1,35 @@
 <script lang="ts" setup>
 import DeleteAction from "@/components/DeleteAction.vue";
+import { Product } from "@/entities/product-entity";
+import { fetchData } from "@/services/fetch-data";
+import { productsWithIdSchema } from "@/validations/products-schema";
+import { onErrorCaptured, onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 
-const items = [
-    {
-        id: "1",
-        name: "Hello",
-    },
-];
+const products = ref<Product[]>([]);
+const errorMessage = ref();
+
+onMounted(async () => {
+    const responseValidation = productsWithIdSchema.safeParse(
+        await fetchData("products")
+    );
+
+    if (!responseValidation.success) {
+        console.log(responseValidation.error)
+        errorMessage.value = "Falha ao obter os produtos! :(";
+        return;
+    }
+
+    products.value = responseValidation.data;
+});
+
+onErrorCaptured(() => {
+    errorMessage.value = "Falha ao obter os produtos! :(";
+})
 </script>
 
 <template>
-    <div class="table-wrapper">
+    <div v-if="!errorMessage && products" class="table-wrapper">
         <table class="table">
             <thead class="table-header">
                 <tr class="row">
@@ -21,14 +39,14 @@ const items = [
                 </tr>
             </thead>
             <tbody class="table-body">
-                <tr class="row" v-for="item in items" :key="item.id">
-                    <td class="table-cell">{{ item.id }}</td>
-                    <td class="table-cell">{{ item.name }}</td>
+                <tr class="row" v-for="product in products" :key="product.id">
+                    <td class="table-cell">{{ product.id }}</td>
+                    <td class="table-cell">{{ product.name }}</td>
                     <td class="table-cell actions">
                         <RouterLink
                             :to="{
                                 name: 'show-product',
-                                params: { id: item.id },
+                                params: { id: product.id },
                             }"
                             class="see-action"
                         >
@@ -40,7 +58,7 @@ const items = [
                         <RouterLink
                             :to="{
                                 name: 'update-product',
-                                params: { id: item.id },
+                                params: { id: product.id },
                             }"
                             class="update-action"
                         >
@@ -51,6 +69,9 @@ const items = [
             </tbody>
         </table>
     </div>
+    <p v-else>
+        {{ errorMessage }}
+    </p>
 </template>
 
 <style scoped>
