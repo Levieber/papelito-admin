@@ -43,7 +43,7 @@ async function handleSignUp() {
     }
 
     if (typeof response.data === "string") {
-        alert(response);
+        alert(response.data);
         email.value = "";
         password.value = "";
         return;
