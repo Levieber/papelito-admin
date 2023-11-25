@@ -3,7 +3,7 @@ import {
     createWebHashHistory,
     type RouteRecordRaw,
 } from "vue-router";
-import SignUpForm from "@/screens/sign-up/sign-up-form.vue";
+import SignInForm from "@/screens/sign-in/sign-in-form.vue";
 import ProductsLayout from "@/screens/products/products-layout.vue";
 import ProductsList from "@/screens/products/products-list.vue";
 import ProductsForm from "@/screens/products/products-form.vue";
@@ -12,7 +12,7 @@ import ProductShow from "./screens/products/product-show.vue";
 export const routes: RouteRecordRaw[] = [
     {
         path: "/",
-        component: SignUpForm,
+        component: SignInForm,
     },
     {
         path: "/products",
