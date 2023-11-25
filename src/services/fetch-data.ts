@@ -21,7 +21,10 @@ export const fetchData = async <T>(
                 options
             );
             return response.data;
-        } else if (!options.body) {
+        } else if (
+            ["post", "put", "patch"].includes(options.method) &&
+            !options.body
+        ) {
             throw new TypeError("Missing body option");
         }
 
