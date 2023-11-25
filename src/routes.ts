@@ -9,6 +9,7 @@ import ProductsList from "@/screens/products/products-list.vue";
 import ProductsForm from "@/screens/products/products-form.vue";
 import ProductShow from "./screens/products/product-show.vue";
 import { TokenService } from "./services/token-service";
+import { axiosInstance } from "./services/fetch-data";
 
 export const routes: RouteRecordRaw[] = [
     {
@@ -51,11 +52,17 @@ export const router = createRouter({
 });
 
 router.beforeEach((to, _from) => {
-    if (to.name && /product/i.test(to.name.toString()) && !TokenService.get()) {
+    const token = TokenService.get();
+
+    if (token) {
+        axiosInstance.defaults.headers.common.Authorization = token;
+    }
+
+    if (to.name && /product/i.test(to.name.toString()) && !token) {
         return { name: "sign-in" };
     }
 
-    if (to.path === "/" && TokenService.get()) {
+    if (to.path === "/" && token) {
         return { name: "products" };
     }
 });
