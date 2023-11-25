@@ -9,7 +9,13 @@ export class TokenService {
     }
 
     static get() {
-        localStorage.getItem(this.key);
+        const storaged = localStorage.getItem(this.key);
+
+        if (!storaged) {
+            return null;
+        }
+
+        return storaged;
     }
 
     static remove() {
