@@ -3,7 +3,8 @@ import { axiosInstance } from "./fetch-data";
 export class TokenService {
     static key = "@papelito/token";
 
-    static save(token: string) {
+    static save(tokenContent: string) {
+        const token = "Bearer " + tokenContent;
         localStorage.setItem(this.key, token);
         axiosInstance.defaults.headers.common.Authorization = token;
     }
