@@ -1,21 +1,41 @@
 <script lang="ts" setup>
+import { ref, onMounted, onErrorCaptured } from "vue";
 import DeleteAction from "@/components/DeleteAction.vue";
+import { Product } from "@/entities/product-entity";
+import { fetchData } from "@/services/fetch-data";
 import { currencyFormatter } from "@/utils/currency-formatter";
+import { productWithIdSchema } from "@/validations/products-schema";
 
-const item = {
-    name: "Product",
-    price: "20",
-    description: "Hello World",
-};
+const { id } = defineProps<{ id?: string }>();
+const product = ref<Product>();
+const errorMessage = ref();
+
+onMounted(async () => {
+    const responseValidation = productWithIdSchema.safeParse(
+        await fetchData(`products/${id}`)
+    );
+
+    if (!responseValidation.success) {
+        console.log(responseValidation.error);
+        errorMessage.value = "Falha ao obter o produto! :(";
+        return;
+    }
+
+    product.value = responseValidation.data;
+});
+
+onErrorCaptured(() => {
+    errorMessage.value = "Falha ao obter o produto! :(";
+});
 </script>
 
 <template>
-    <article className="item">
+    <article v-if="!errorMessage && product">
         <div class="container">
             <div class="main-info-container">
-                <h1>{{ item.name }}</h1>
+                <h1>{{ product.name }}</h1>
                 <span class="price">
-                    Preço: {{ currencyFormatter.format(+item.price) }}
+                    Preço: {{ currencyFormatter.format(+product.price) }}
                 </span>
             </div>
 
@@ -28,11 +48,13 @@ const item = {
                 </RouterLink>
                 <DeleteAction>Excluir</DeleteAction>
             </div>
-
         </div>
 
-        <p class="description">{{ item.description }}</p>
+        <p class="description">{{ product.description }}</p>
     </article>
+    <p v-else>
+        {{ errorMessage }}
+    </p>
 </template>
 
 <style>

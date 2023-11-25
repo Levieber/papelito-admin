@@ -34,11 +34,13 @@ export const routes: RouteRecordRaw[] = [
             {
                 path: ":id/update",
                 name: "update-product",
+                props: true,
                 component: ProductsForm,
             },
             {
                 path: ":id",
                 name: "show-product",
+                props: true,
                 component: ProductShow,
             },
         ],
