@@ -5,7 +5,8 @@ import {
     signUpResponseSchema,
     signUpSchema,
 } from "@/validations/sign-up-schema";
-import { axiosInstance, fetchData } from "@/services/fetch-data";
+import { fetchData } from "@/services/fetch-data";
+import { TokenService } from "@/services/token-service";
 
 const router = useRouter();
 
@@ -48,7 +49,7 @@ async function handleSignUp() {
         return;
     }
 
-    axiosInstance.defaults.headers.common.Authorization = response.data.token;
+    TokenService.save(response.data.token);
     router.push({ name: "products" });
 }
 </script>
