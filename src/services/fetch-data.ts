@@ -14,18 +14,20 @@ export const fetchData = async <T>(
     options: FetchOptions = { method: "get" }
 ): Promise<T | string> => {
     try {
-        if (["post", "put", "patch"].includes(options.method) && options.body) {
+        if (
+            ["post", "put", "patch"].includes(options.method) &&
+            !options.body
+        ) {
+            throw new TypeError("Missing body option");
+        }
+
+        if (["post", "put", "patch"].includes(options.method)) {
             const response = await axiosInstance[options.method]<T>(
                 url,
                 options.body,
                 options
             );
             return response.data;
-        } else if (
-            ["post", "put", "patch"].includes(options.method) &&
-            !options.body
-        ) {
-            throw new TypeError("Missing body option");
         }
 
         const response = await axiosInstance[options.method]<T>(url, options);
