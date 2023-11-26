@@ -50,7 +50,7 @@ onErrorCaptured(() => {
             </div>
         </div>
 
-        <p class="description">{{ product.description }}</p>
+        <p class="description">{{ product.description || "Sem descrição" }}</p>
     </article>
     <p v-else>
         {{ errorMessage }}

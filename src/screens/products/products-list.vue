@@ -4,28 +4,34 @@ import { Product } from "@/entities/product-entity";
 import { fetchData } from "@/services/fetch-data";
 import { productsWithIdSchema } from "@/validations/products-schema";
 import { onErrorCaptured, onMounted, ref } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, onBeforeRouteUpdate } from "vue-router";
 
 const products = ref<Product[]>([]);
 const errorMessage = ref();
 
-onMounted(async () => {
+async function fetchProducts() {
     const responseValidation = productsWithIdSchema.safeParse(
         await fetchData("products")
     );
 
     if (!responseValidation.success) {
-        console.log(responseValidation.error)
+        console.log(responseValidation.error);
         errorMessage.value = "Falha ao obter os produtos! :(";
         return;
     }
 
     products.value = responseValidation.data;
-});
+}
+
+onMounted(fetchProducts);
 
 onErrorCaptured(() => {
     errorMessage.value = "Falha ao obter os produtos! :(";
-})
+});
+
+onBeforeRouteUpdate(async () => {
+    await fetchProducts();
+});
 </script>
 
 <template>
