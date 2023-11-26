@@ -1,41 +1,18 @@
 <script lang="ts" setup>
 import DeleteAction from "@/components/DeleteAction.vue";
-import { Product } from "@/entities/product-entity";
-import { fetchData } from "@/services/fetch-data";
-import { productsWithIdSchema } from "@/validations/products-schema";
-import { onErrorCaptured, onMounted, ref } from "vue";
-import { RouterLink, onBeforeRouteUpdate } from "vue-router";
-
-const products = ref<Product[]>([]);
-const errorMessage = ref();
-
-async function fetchProducts() {
-    const responseValidation = productsWithIdSchema.safeParse(
-        await fetchData("products")
-    );
-
-    if (!responseValidation.success) {
-        console.log(responseValidation.error);
-        errorMessage.value = "Falha ao obter os produtos! :(";
-        return;
-    }
-
-    products.value = responseValidation.data;
-}
+import { state, fetchProducts } from "@/states/products";
+import { onErrorCaptured, onMounted } from "vue";
+import { RouterLink } from "vue-router";
 
 onMounted(fetchProducts);
 
 onErrorCaptured(() => {
-    errorMessage.value = "Falha ao obter os produtos! :(";
-});
-
-onBeforeRouteUpdate(async () => {
-    await fetchProducts();
+   state.errorMessage = "Falha ao obter os produtos! :(";
 });
 </script>
 
 <template>
-    <div v-if="!errorMessage && products" class="table-wrapper">
+    <div v-if="!state.errorMessage && state.products" class="table-wrapper">
         <table class="table">
             <thead class="table-header">
                 <tr class="row">
@@ -45,7 +22,7 @@ onBeforeRouteUpdate(async () => {
                 </tr>
             </thead>
             <tbody class="table-body">
-                <tr class="row" v-for="product in products" :key="product.id">
+                <tr class="row" v-for="product in state.products" :key="product.id">
                     <td class="table-cell">{{ product.id }}</td>
                     <td class="table-cell">{{ product.name }}</td>
                     <td class="table-cell actions">
@@ -58,7 +35,7 @@ onBeforeRouteUpdate(async () => {
                         >
                             Visualizar
                         </RouterLink>
-                        <DeleteAction class="delete-action">
+                        <DeleteAction :delete-url="`products/${product.id}`">
                             Excluir
                         </DeleteAction>
                         <RouterLink
@@ -76,7 +53,7 @@ onBeforeRouteUpdate(async () => {
         </table>
     </div>
     <p v-else>
-        {{ errorMessage }}
+        {{ state.errorMessage }}
     </p>
 </template>
 

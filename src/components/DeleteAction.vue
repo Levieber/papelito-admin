@@ -1,5 +1,27 @@
+<script lang="ts" setup>
+import { fetchProducts } from "@/states/products";
+import { fetchData } from "@/services/fetch-data";
+import { onErrorCaptured } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const { deleteUrl } = defineProps<{ deleteUrl: string }>();
+
+async function handleDelete() {
+    if (confirm("Você tem certeza que quer excluir?")) {
+        await fetchData(deleteUrl, { method: "delete" });
+        await fetchProducts();
+        router.push({ name: "products" });
+    }
+}
+
+onErrorCaptured(() => {
+    alert("Não foi possível deletar");
+});
+</script>
+
 <template>
-    <button class="delete-action"><slot /></button>
+    <button @click="handleDelete" class="delete-action"><slot /></button>
 </template>
 
 <style>

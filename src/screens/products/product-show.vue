@@ -2,26 +2,22 @@
 import { ref, onMounted, onErrorCaptured } from "vue";
 import DeleteAction from "@/components/DeleteAction.vue";
 import { Product } from "@/entities/product-entity";
-import { fetchData } from "@/services/fetch-data";
 import { currencyFormatter } from "@/utils/currency-formatter";
-import { productWithIdSchema } from "@/validations/products-schema";
+import { state } from "@/states/products";
 
 const { id } = defineProps<{ id?: string }>();
 const product = ref<Product>();
 const errorMessage = ref();
 
 onMounted(async () => {
-    const responseValidation = productWithIdSchema.safeParse(
-        await fetchData(`products/${id}`)
-    );
-
-    if (!responseValidation.success) {
-        console.log(responseValidation.error);
-        errorMessage.value = "Falha ao obter o produto! :(";
-        return;
+    if (id) {
+        const productIndex = state.products.findIndex((p) => p.id === id);
+        if (productIndex !== -1) {
+            product.value = state.products[productIndex];
+        } else {
+            errorMessage.value = "Falha ao obter o produto! :(";
+        }
     }
-
-    product.value = responseValidation.data;
 });
 
 onErrorCaptured(() => {
@@ -46,7 +42,9 @@ onErrorCaptured(() => {
                 >
                     Atualizar
                 </RouterLink>
-                <DeleteAction>Excluir</DeleteAction>
+                <DeleteAction :delete-url="`products/${product.id}`"
+                    >Excluir</DeleteAction
+                >
             </div>
         </div>
 
