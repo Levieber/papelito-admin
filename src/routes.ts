@@ -11,37 +11,50 @@ import ProductShow from "./screens/products/product-show.vue";
 import { TokenService } from "./services/token-service";
 import { axiosInstance } from "./services/fetch-data";
 
+declare module "vue-router" {
+    interface RouteMeta {
+        authRoute?: boolean;
+        requiresAuth: boolean;
+    }
+}
+
 export const routes: RouteRecordRaw[] = [
     {
         path: "/",
         component: SignInForm,
         name: "sign-in",
+        meta: { requiresAuth: false, authRoute: true },
     },
     {
         path: "/products",
         component: ProductsLayout,
+        meta: { requiresAuth: true },
         children: [
             {
                 path: "",
                 name: "products",
                 component: ProductsList,
+                meta: { requiresAuth: true },
             },
             {
                 path: "new",
                 name: "new-product",
                 component: ProductsForm,
+                meta: { requiresAuth: true },
             },
             {
                 path: ":id/update",
                 name: "update-product",
                 props: true,
                 component: ProductsForm,
+                meta: { requiresAuth: true },
             },
             {
                 path: ":id",
                 name: "show-product",
                 props: true,
                 component: ProductShow,
+                meta: { requiresAuth: true },
             },
         ],
     },
@@ -60,11 +73,11 @@ router.beforeEach((to, _from) => {
         axiosInstance.defaults.headers.common.Authorization = token;
     }
 
-    if (to.name && /product/i.test(to.name.toString()) && !token) {
+    if (to.meta.requiresAuth && !token) {
         return { name: "sign-in" };
     }
 
-    if (to.path === "/" && token) {
+    if (to.meta.authRoute && token) {
         return { name: "products" };
     }
 });
