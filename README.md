@@ -1,18 +1,81 @@
-# Vue 3 + TypeScript + Vite
+<p align="center">
+  <img height="30" src="https://img.shields.io/badge/Made%20for-VSCode-1f425f.svg"/>
+</p>
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 💭 Descrição
 
-## Recommended IDE Setup
+<p>Um projeto para o hackaton 4 da Onebitcode, com o objetivo de criar um gerenciamento de produtos de uma papelaria</p>
+<p>Funcionalidades:</p>
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+  - Criar, atualizar, deletar e buscar produtos;
+  - Autenticação
 
-## Type Support For `.vue` Imports in TS
+## 💡 Informações do projeto
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+### 💻 Ambiente: 
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![Powershell](https://img.shields.io/badge/Powershell-2CA5E0?style=for-the-badge&logo=powershell&logoColor=white)
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+### 👨‍💻 Principais tecnologias:
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+- [Vue](https://vuejs.org/)
+  - Framework Front-End Javascript
+- [Typescript](https://www.typescriptlang.org/)
+  - Superset, linguagem baseado no Javascript.
+- [Vue Router](https://router.vuejs.org/)
+  - Roteador oficial do Vue
+- [Axios](https://axios-http.com/)
+  - Cliente HTTP 
+- [Zod](https://zod.dev/)
+  - Validador de schema
+
+## 🛠️ Modificando o projeto
+
+### Siga as seguintes instruções para instalar e poder modificar o projeto em sua máquina:
+
+### 📋 Pré-requisitos:
+
+Para baixar, executar e modificar o projeto, você precisa ter instalado em sua máquina: 
+* [Node](https://nodejs.org/en/)
+* Um gerenciador de pacotes, como o [PNPM](https://pnpm.io/), [Npm](https://nodejs.org/en/) ou [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/)
+* [Git](https://git-scm.com/downloads)
+* Editor de código ou IDE, como o [VSCode](https://code.visualstudio.com/Download)
+
+### 🔧 Instalação e execução
+
+1. Clone o repositório
+```
+git clone https://github.com/Levieber/papelito-admin.git
+```
+2. Acesse a pasta do projeto
+```
+cd papelito-admin
+```
+3. Instale as depedências
+```
+// Com o Npm
+npm i // Ou npm install
+
+// Com o pnpm
+pnpm i // Ou pnpm install
+ 
+// Com o Yarn:
+yarn // Ou yarn install
+```
+3. Baixe a [outra parte do projeto, a API](https://github.com/Levieber/papelito-api/)
+4. Preencha as variáveis de ambiente necessárias
+5. Inicie o servidor de desenvolvimento do projeto
+```
+// Com o Npm:
+npm run dev
+
+// Com o pnpm:
+pnpm dev // Ou pnpm run dev  
+
+// Com o Yarn:
+yarn dev
+```
+
+Obs: o servidor iniciará na porta 5173 - acesse por: <http://localhost:5173/>
+
+<h3 align="center">Agora, é sua hora de codar 🎮</h3>
