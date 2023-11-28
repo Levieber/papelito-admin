@@ -3,7 +3,7 @@ import { ref, onMounted, onErrorCaptured } from "vue";
 import DeleteAction from "@/components/DeleteAction.vue";
 import { Product } from "@/entities/product-entity";
 import { currencyFormatter } from "@/utils/currency-formatter";
-import { state } from "@/states/products";
+import { fetchProducts, state } from "@/states/products";
 
 const { id } = defineProps<{ id?: string }>();
 const product = ref<Product>();
@@ -11,6 +11,9 @@ const errorMessage = ref();
 
 onMounted(async () => {
     if (id) {
+        if (state.products.length === 0) {
+            await fetchProducts();
+        }
         const productIndex = state.products.findIndex((p) => p.id === id);
         if (productIndex !== -1) {
             product.value = state.products[productIndex];
