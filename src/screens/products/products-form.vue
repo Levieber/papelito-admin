@@ -42,7 +42,7 @@ const handleSaveProduct = async () => {
 
     if (id) {
         await fetchData(`products/${id}`, {
-            method: "put",
+            method: "patch",
             body: product.value,
         });
     } else {
